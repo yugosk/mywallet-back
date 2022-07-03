@@ -12,4 +12,6 @@ server.use(cors());
 server.use(authRouter);
 server.use(financialRouter);
 
-server.listen(5000, () => console.log("Servidor iniciado na porta 5000"));
+server.listen(process.env.PORT, () =>
+  console.log("Servidor iniciado na porta " + process.env.PORT)
+);
