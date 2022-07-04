@@ -1,10 +1,10 @@
 import {
   getTransactions,
   addTransaction,
-} from "../controllers/financialController";
+} from "../controllers/financialController.js";
 import { Router } from "express";
-import userValidation from "../middlewares/userValidation";
-import financialValidation from "../middlewares/financialValidation";
+import userValidation from "../middlewares/userValidation.js";
+import financialValidation from "../middlewares/financialValidation.js";
 
 const financialRouter = Router();
 

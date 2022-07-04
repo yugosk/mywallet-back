@@ -1,4 +1,4 @@
-import { db } from "../db/mongo";
+import { db } from "../db/mongo.js";
 import joi from "joi";
 import { validate } from "uuid";
 

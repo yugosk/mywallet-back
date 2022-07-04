@@ -1,5 +1,4 @@
-import { db } from "../db/mongo";
-import joi from "joi";
+import { db } from "../db/mongo.js";
 import dayjs from "dayjs";
 
 export async function getTransactions(req, res) {
