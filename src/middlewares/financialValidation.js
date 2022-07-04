@@ -6,7 +6,7 @@ async function financialValidation(req, res, next) {
   const transactionSchema = joi.object({
     value: joi.number().required(),
     description: joi.string().required(),
-    type: joi.valid("inflow", "outflow"),
+    type: joi.string(),
   });
 
   const transaction = req.body;
