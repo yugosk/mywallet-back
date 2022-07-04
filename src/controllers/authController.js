@@ -9,18 +9,24 @@ export async function createUser(req, res) {
     name: joi.string().required(),
     email: joi.string().email().required(),
     password: joi.string().required(),
-    confirmPassword: joi.string().valid(joi.ref("password")).required(),
   });
 
   const { error } = userSchema.validate(newUser);
 
   if (error) {
-    res.status(422).send("INSERIR O ERRO AQUI");
+    res.sendStatus(422);
+    return;
+  }
+
+  const emailCheck = await db
+    .collection("users")
+    .findOne({ email: newUser.email });
+  if (emailCheck) {
+    res.sendStatus(401);
     return;
   }
 
   const encryptedPassword = bcrypt.hashSync(newUser.password, 10);
-
   await db.collection("users").insertOne({
     name: newUser.name,
     email: newUser.email,
@@ -39,7 +45,7 @@ export async function loginUser(req, res) {
   const { error } = userSchema.validate(user);
 
   if (error) {
-    res.status(422).send("INSERIR O ERRO AQUI");
+    res.sendStatus(422);
     return;
   }
 
@@ -55,6 +61,6 @@ export async function loginUser(req, res) {
     res.status(201).send({ sessionToken });
     return;
   } else {
-    res.status(401).send("E-mail ou senha incorreto(a)(s)!");
+    res.sendStatus(401);
   }
 }

@@ -1,37 +1,34 @@
-import { db, objectId } from "../db/mongo";
+import { db } from "../db/mongo";
 import joi from "joi";
 import dayjs from "dayjs";
 
 export async function getTransactions(req, res) {
   const session = res.locals.session;
-  const transactions = await db
-    .collection("transactions")
-    .find({ userId: new objectId(session.userId) })
-    .toArray();
 
-  res.send(transactions);
+  try {
+    const transactions = await db
+      .collection("transactions")
+      .find({ userId: session.userId })
+      .toArray();
+    res.status(200).send(transactions);
+  } catch {
+    res.sendStatus(500);
+  }
 }
 
 export async function addTransaction(req, res) {
   const session = res.locals.session;
-  const transaction = req.body;
+  const transaction = res.locals.transaction;
 
-  const transactionSchema = joi.object({
-    value: joi.number().required(),
-    description: joi.string().required(),
-    type: joi.valid("inflow", "outflow"),
-  });
-
-  const { error } = transactionSchema.validate(transaction);
-
-  if (error) {
-    res.status(422).send("COLOCAR O ERRO AQUI DEPOIS");
+  try {
+    await db.collection("transactions").insertOne({
+      ...transaction,
+      date: dayjs().format("DD/MM"),
+      userId: session.userId,
+    });
+    res.sendStatus(201);
+  } catch {
+    res.sendStatus(500);
     return;
   }
-  await db.collection("transactions").insertOne({
-    ...transaction,
-    date: dayjs().format("DD/MM"),
-    userId: session.userId,
-  });
-  res.status(201).send("Movimentação adicionada com sucesso!");
 }
