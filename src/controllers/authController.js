@@ -52,13 +52,17 @@ export async function loginUser(req, res) {
   const dbUser = await db.collection("users").findOne({ email: user.email });
   if (dbUser && bcrypt.compareSync(user.password, dbUser.password)) {
     const sessionToken = uuid();
+    const user = {
+      name: dbUser.name,
+      token: sessionToken,
+    };
 
     await db.collection("sessions").insertOne({
       token: sessionToken,
       userId: dbUser._id,
     });
 
-    res.status(201).send({ sessionToken });
+    res.status(201).send(user);
     return;
   } else {
     res.sendStatus(401);
