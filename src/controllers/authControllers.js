@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
 import { createUser } from "../repositories/authRepository.js";
 import { hashPassword } from "../utils/encryptionUtils.js";
+import { sign } from "../utils/tokenUtils.js";
 
 export async function registerUser(req, res) {
   const { name, email, password } = res.locals.user;
@@ -20,7 +20,7 @@ export async function registerUser(req, res) {
 export async function loginUser(req, res) {
   const { id, name } = res.locals.userInfo;
   try {
-    const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = await sign(id);
     res.status(200).send({ token, name });
   } catch (err) {
     res.status(500).send("Unexpected error, try again later");
