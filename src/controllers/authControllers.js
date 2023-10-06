@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { createUser, findUserByEmail } from "../repositories/authRepository.js";
-import { compareHash, hashPassword } from "../utils/encryptionUtils.js";
+import { createUser } from "../repositories/authRepository.js";
+import { hashPassword } from "../utils/encryptionUtils.js";
 
 export async function registerUser(req, res) {
   const { name, email, password } = res.locals.user;
