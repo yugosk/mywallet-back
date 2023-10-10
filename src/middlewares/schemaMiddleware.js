@@ -7,7 +7,7 @@ export function schemaMiddleware(schema) {
         .join(", ");
       res.status(422).send(errorMessage);
     } else {
-      res.locals.user = req.body;
+      res.locals.body = req.body;
       next();
     }
   };

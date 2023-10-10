@@ -3,7 +3,7 @@ import { hashPassword } from "../utils/encryptionUtils.js";
 import { sign } from "../utils/tokenUtils.js";
 
 export async function registerUser(req, res) {
-  const { name, email, password } = res.locals.user;
+  const { name, email, password } = res.locals.body;
 
   try {
     const hashedPassword = await hashPassword(password);
