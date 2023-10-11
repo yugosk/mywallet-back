@@ -2,7 +2,7 @@ import connection from "../db/postgresql.js";
 
 export async function getTransactionsByUserId(userId) {
   const { rows } = await connection.query(
-    `SELECT * FROM records WHERE "userId" = $1;`,
+    `SELECT * FROM records WHERE "userId" = $1 ORDER BY date;`,
     [userId]
   );
   return rows;
