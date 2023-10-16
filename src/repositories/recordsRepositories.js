@@ -33,3 +33,12 @@ export async function deleteRecord(id) {
     [id]
   );
 }
+
+export async function update(id, amount, date, description) {
+  return await connection.query(
+    `
+    UPDATE records SET amount = $1, date = $2, description = $3 WHERE id = $4
+  `,
+    [amount, date, description, id]
+  );
+}
