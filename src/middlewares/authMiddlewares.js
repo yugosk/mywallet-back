@@ -66,6 +66,7 @@ export async function checkUser(req, res, next) {
   res.locals.id = id;
   try {
     const transaction = await read(id);
+    console.log();
     if (transaction.userId !== userId) {
       throw { message: "Unauthorized", status: 401 };
     } else {
