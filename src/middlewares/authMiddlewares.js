@@ -1,4 +1,5 @@
 import { findUserByEmail } from "../repositories/authRepository.js";
+import { read } from "../repositories/recordsRepositories.js";
 import { compareHash } from "../utils/encryptionUtils.js";
 import { validate } from "../utils/tokenUtils.js";
 
@@ -56,5 +57,25 @@ export async function validateToken(req, res, next) {
     next();
   } catch (err) {
     res.status(401).send("Invalid token");
+  }
+}
+
+export async function checkUser(req, res, next) {
+  const id = req.query.id;
+  const userId = res.locals.userId;
+  res.locals.id = id;
+  try {
+    const transaction = await read(id);
+    if (transaction.userId !== userId) {
+      throw { message: "Unauthorized", status: 401 };
+    } else {
+      next();
+    }
+  } catch (err) {
+    if (err.status === 401) {
+      return res.status(err.status).send(err.message);
+    } else {
+      return res.status(500).send("Unexpected error");
+    }
   }
 }

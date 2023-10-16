@@ -14,3 +14,22 @@ export async function insert(userId, type, amount, date, description) {
     [userId, type, amount, date, description]
   );
 }
+
+export async function read(id) {
+  const { rows } = await connection.query(
+    `
+    SELECT * FROM records WHERE id = $1
+  `,
+    [id]
+  );
+  return rows[0];
+}
+
+export async function deleteRecord(id) {
+  return await connection.query(
+    `
+    DELETE FROM records WHERE id = $1
+  `,
+    [id]
+  );
+}

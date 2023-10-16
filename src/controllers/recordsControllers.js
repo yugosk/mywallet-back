@@ -1,4 +1,5 @@
 import {
+  deleteRecord,
   getTransactionsByUserId,
   insert,
 } from "../repositories/recordsRepositories.js";
@@ -18,5 +19,15 @@ export async function postTransaction(req, res) {
     res.sendStatus(201);
   } catch (err) {
     return res.status(500).send("Unexpected error, try again later");
+  }
+}
+
+export async function deleteTransaction(req, res) {
+  const id = res.locals.id;
+  try {
+    await deleteRecord(id);
+    return res.status(204).send("Record deleted succesfully");
+  } catch (err) {
+    return res.status(500).send("Unexpected error");
   }
 }

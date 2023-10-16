@@ -1,7 +1,7 @@
 import { Router } from "express";
-import authRouter from "./authRouter.js";
-import { validateToken } from "../middlewares/authMiddlewares.js";
+import { checkUser, validateToken } from "../middlewares/authMiddlewares.js";
 import {
+  deleteTransaction,
   getTransactions,
   postTransaction,
 } from "../controllers/recordsControllers.js";
@@ -10,12 +10,18 @@ import { recordSchema } from "../schemas/recordsSchemas.js";
 
 const recordsRouter = Router();
 
-authRouter.get("/transactions", validateToken, getTransactions);
-authRouter.post(
+recordsRouter.get("/transactions", validateToken, getTransactions);
+recordsRouter.post(
   "/transactions",
   schemaMiddleware(recordSchema),
   validateToken,
   postTransaction
+);
+recordsRouter.delete(
+  "/transactions",
+  validateToken,
+  checkUser,
+  deleteTransaction
 );
 
 export default recordsRouter;

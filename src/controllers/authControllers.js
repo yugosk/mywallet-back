@@ -10,7 +10,6 @@ export async function registerUser(req, res) {
     await createUser(email, name, hashedPassword);
     return res.status(201).send("Success creating new user");
   } catch (err) {
-    console.log(err);
     return res
       .status(500)
       .send("There was as error creating new user, try again later");
