@@ -24,7 +24,6 @@ export async function postTransaction(req, res) {
 
 export async function deleteTransaction(req, res) {
   const id = res.locals.id;
-  console.log("chegou aqui");
   try {
     await deleteRecord(id);
     return res.status(204).send("Record deleted succesfully");
